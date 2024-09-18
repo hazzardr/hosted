@@ -1,6 +1,6 @@
 ---
 - hosts: all
-  become: yes
+  become: true
   vars_files:
     - vars/private.yml
   tasks:
@@ -20,6 +20,11 @@
         name: "{{ login_user }}"
         group: ansible-access
         append: yes
+    - name: Ensure Docker service is running
+      systemd:
+        name: docker
+        state: started
+        enabled: yes
 
 - name: Set up Tailscale and Docker.
   hosts: all
@@ -29,4 +34,4 @@
         tailscale_authkey: "{{ lookup('env', 'TAILSCALE_KEY') }}"
         tailscale_args: "--ssh"
     - role: geerlingguy.docker
-      become: yes
+      become: true
