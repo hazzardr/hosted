@@ -2,7 +2,6 @@
 .terraformrc
 terraform.rc
 
-private.yml
 *.retry
 inventory*
 .vault_pass
