@@ -26,8 +26,9 @@ jobs:
           python -m pip install --upgrade pip
           pip install ansible-lint yamllint
 
-      - name: Run ansible-lint
-        run: ansible-lint
+      # https://github.com/ansible/ansible-lint/discussions/1465
+      # - name: Run ansible-lint
+      #   run: ansible-lint
 
       - name: Run yamllint
         run: yamllint .
