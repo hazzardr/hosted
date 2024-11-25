@@ -1,0 +1,9 @@
+# Ignore CLI configuration files
+.terraformrc
+terraform.rc
+
+private.yml
+*.retry
+inventory*
+.vault_pass
+group_vars/*/vault.yml
