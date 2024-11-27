@@ -1,4 +1,5 @@
-PROJECT_NAME := "ubuntu"
+PROJECT_NAME := "gameserver"
+PLAYBOOK_NAME := "factorio-server.yml"
 
 .PHONY: help ## print this
 help:
@@ -11,14 +12,10 @@ help:
 	@echo "Commands:"
 	@grep '^.PHONY: ' Makefile | sed 's/.PHONY: //' | awk '{split($$0,a," ## "); printf "  \033[34m%0-10s\033[0m %s\n", a[1], a[2]}'
 
-.PHONY: vault-edit ## edit secret vars
-vault-edit: 
-	@ansible-vault edit vars/vault.yml 
-
 .PHONY: deploy ## run the webserver playbook
 deploy: 
-	@ansible-playbook webserver.yml --vault-password-file .vault_pass -i inventory-ts
+	@ansible-playbook $(PLAYBOOK_NAME) -i inventory.yml
 
 .PHONY: ping ## Ping the hosts
 ping: 
-	@ansible -i inventory-ts webserver -m ping
+	@ansible -i inventory.yml $(PLAYBOOK_NAME) -m ping
