@@ -1,0 +1,39 @@
+---
+
+- name: Configure system access and Docker
+  hosts: webserver
+  become: true
+  vars_files:
+    - vars/private.yml
+    - vars/vault.yml
+  tasks:
+    - name: Ensure Docker service is running
+      ansible.builtin.systemd:
+        name: "docker"
+        state: started
+        enabled: true
+
+    - name: Create Docker directories
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        mode: '0755'
+      loop:
+        - /opt/docker
+        - /opt/docker/stacks
+    - name: Copy Docker docker-compose file
+      ansible.builtin.copy:
+        src: templates/dockge/compose.yml
+        dest: /opt/docker/docker-compose.yml
+        mode: '0600'
+- name: Set up Tailscale
+  hosts: webserver
+  become: true
+  vars_files:
+    - vars/private.yml
+    - vars/vault.yml
+  roles:
+    - role: artis3n.tailscale
+      vars:
+        tailscale_authkey: "{{ tailscale_key }}"
+        tailscale_args: "--ssh"

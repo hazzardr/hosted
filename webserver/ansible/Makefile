@@ -11,6 +11,10 @@ help:
 	@echo "Commands:"
 	@grep '^.PHONY: ' Makefile | sed 's/.PHONY: //' | awk '{split($$0,a," ## "); printf "  \033[34m%0-10s\033[0m %s\n", a[1], a[2]}'
 
+.PHONY: install ## install requirements
+install:
+	@ansible-galaxy install -r requirements.yml
+	
 .PHONY: vault-edit ## edit secret vars
 vault-edit: 
 	@ansible-vault edit vars/vault.yml 

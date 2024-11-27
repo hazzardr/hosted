@@ -1,0 +1,34 @@
+# .github/workflows/ansible-ci.yml
+name: Ansible CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "**webserver.yml"
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install ansible-lint yamllint
+
+      # https://github.com/ansible/ansible-lint/discussions/1465
+      # - name: Run ansible-lint
+      #   run: ansible-lint
+
+      - name: Run yamllint
+        run: yamllint .
