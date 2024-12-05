@@ -17,7 +17,7 @@ install:
 	
 .PHONY: vault-edit ## edit secret vars
 vault-edit: 
-	@ansible-vault edit vars/vault.yml 
+	@ansible-vault edit vars/vault.yml --vault-password-file .vault_pass
 
 .PHONY: deploy ## run the webserver playbook
 deploy: 
