@@ -13,3 +13,4 @@ Among other things, this playbook manages:
 * docker
 * Tailscale
 * [dockge](https://github.com/louislam/dockge)
+  * 5001

@@ -13,18 +13,18 @@
         state: started
         enabled: true
 
-    - name: Create Docker directories
+    - name: Create Default Dockge directories
       ansible.builtin.file:
         path: "{{ item }}"
         state: directory
         mode: '0755'
       loop:
-        - /opt/docker
-        - /opt/docker/stacks
+        - /opt/dockge
+        - /opt/stacks
     - name: Copy Docker docker-compose file
       ansible.builtin.copy:
         src: templates/dockge/compose.yml
-        dest: /opt/docker/docker-compose.yml
+        dest: /opt/dockge/docker-compose.yml
         mode: '0600'
 - name: Set up Tailscale
   hosts: webserver
