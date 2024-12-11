@@ -21,8 +21,16 @@ vault-edit:
 
 .PHONY: deploy ## run the webserver playbook
 deploy: 
-	@ansible-playbook webserver.yml --vault-password-file .vault_pass -i inventory-ts
+	@ansible-playbook deployments.yml --vault-password-file .vault_pass -i inventory-ts
 
 .PHONY: ping ## Ping the hosts
 ping: 
 	@ansible -i inventory-ts webserver -m ping
+
+.PHONY: provision ## Provision the hosts
+provision: 
+	@ansible-playbook webserver.yml --vault-password-file .vault_pass -i inventory-ts
+
+.PHONY: updates ## Check for updates
+updates: 
+	@ansible-playbook updates.yml --vault-password-file .vault_pass -i inventory-ts

@@ -1,0 +1,22 @@
+services:
+  ci6ndex:
+    restart: unless-stopped
+    image: ghcr.io/hazzardr/ci6ndex:latest
+    depends_on: []
+    env_file:
+      - .env
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 200M
+        reservations:
+          cpus: "0.25"
+          memory: 100M
+    volumes:
+      - ci6ndex_data:/app/data
+
+volumes:
+  ci6ndex_data:
+  
+networks: {}

@@ -1,0 +1,20 @@
+---
+- name: Deploy Applications
+  hosts: webserver
+  become: true
+  vars_files:
+    - vars/private.yml
+    - vars/vault.yml
+  tasks:
+    - name: Ensure dockge stacks directory exists
+      ansible.builtin.file:
+        path: "/opt/dockge/stacks/ci6ndex"
+        state: directory
+        mode: '0755'
+        recurse: true
+    - name: Copy ci6ndex compose file
+      ansible.builtin.copy:
+        src: templates/deployments/ci6ndex/compose.yml
+        dest: /opt/dockge/stacks/ci6ndex/compose.yml
+        mode: '0600'
+        directory_mode: '0755'

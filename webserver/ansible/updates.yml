@@ -1,0 +1,50 @@
+---
+- name: Configure system access and Docker
+  hosts: webserver
+  become: true
+  vars_files:
+    - vars/private.yml
+    - vars/vault.yml
+  handlers:
+    - name: Reboot
+      ansible.builtin.reboot:
+        reboot_timeout: 300
+
+  tasks:
+    - name: Update apt cache
+      ansible.builtin.apt:
+        update_cache: true
+        cache_valid_time: 3600
+
+    - name: Upgrade all packages
+      ansible.builtin.apt:
+        upgrade: full
+        autoremove: true
+        autoclean: true
+      notify: reboot
+
+    - name: Install unattended-upgrades
+      ansible.builtin.apt:
+        name:
+          - unattended-upgrades
+          - apt-listchanges
+        state: present
+
+    - name: Configure unattended-upgrades settings
+      ansible.builtin.copy:
+        content: |
+          APT::Periodic::Update-Package-Lists "1";
+          APT::Periodic::Unattended-Upgrade "1";
+          APT::Periodic::AutocleanInterval "7";
+          APT::Periodic::Download-Upgradeable-Packages "1";
+          APT::Periodic::Enable "1";
+          // Only install security updates automatically
+          Unattended-Upgrade::Allowed-Origins {
+            "${distro_id}:${distro_codename}-security";
+          };
+          Unattended-Upgrade::AutoFixInterruptedDpkg "true";
+          Unattended-Upgrade::MinimalSteps "true";
+          Unattended-Upgrade::Remove-Unused-Dependencies "true";
+          Unattended-Upgrade::Mail "root";
+        dest: /etc/apt/apt.conf.d/20auto-upgrades
+        mode: "0644"

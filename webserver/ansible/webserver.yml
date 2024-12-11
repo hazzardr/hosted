@@ -1,5 +1,4 @@
 ---
-
 - name: Configure system access and Docker
   hosts: webserver
   become: true
@@ -23,7 +22,7 @@
         - /opt/stacks
     - name: Copy Docker docker-compose file
       ansible.builtin.copy:
-        src: templates/dockge/compose.yml
+        src: templates/dockge/dockge-compose.yml
         dest: /opt/dockge/docker-compose.yml
         mode: '0600'
 - name: Set up Tailscale
