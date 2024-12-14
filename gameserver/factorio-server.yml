@@ -6,7 +6,7 @@
   vars:
     factorio_version: "latest"
     install_dir: "/opt/factorio"
-    
+
   tasks:
     - name: Create factorio group
       group:
@@ -32,7 +32,10 @@
       vars:
         description: "Factorio Headless Server"
         user: "factorio"
-        exec_start: "/opt/factorio/bin/x64/factorio --start-server-load-latest --server-settings /home/factorio/backups/server-settings.json"
+        exec_start: >
+          /opt/factorio/bin/x64/factorio 
+          --start-server-load-latest 
+          --server-settings /home/factorio/backups/server-settings.json
 
     - name: Reload systemd daemon
       systemd:
@@ -64,7 +67,7 @@
         url: "https://factorio.com/get-download/stable/headless/linux64"
         dest: "/tmp/factorio.tar.xz"
         mode: '0644'
-            
+
     - name: Check if saves directory exists
       stat:
         path: "{{ install_dir }}/saves"
