@@ -7,3 +7,4 @@ inventory*
 .vault_pass
 private.yml
 group_vars/*/vault.yml
+*.env

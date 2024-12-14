@@ -6,7 +6,7 @@
     - vars/private.yml
     - vars/vault.yml
   tasks:
-    - name: Ensure dockge stacks directory exists
+    - name: Ensure ci6ndex stacks directory exists 
       ansible.builtin.file:
         path: "/opt/dockge/stacks/ci6ndex"
         state: directory
@@ -16,5 +16,29 @@
       ansible.builtin.copy:
         src: templates/deployments/ci6ndex/compose.yml
         dest: /opt/dockge/stacks/ci6ndex/compose.yml
+        mode: '0600'
+        directory_mode: '0755'
+    - name: Ensure paperless stacks directory exists
+      ansible.builtin.file:
+        path: "/opt/dockge/stacks/paperless-ngx"
+        state: directory
+        mode: '0755'
+        recurse: true
+    - name: Copy paperless compose file
+      ansible.builtin.copy:
+        src: templates/deployments/paperless-ngx/compose.yml
+        dest: /opt/dockge/stacks/paperless-ngx/compose.yml
+        mode: '0600'
+        directory_mode: '0755'
+    - name: Copy paperless settings file
+      ansible.builtin.copy:
+        src: templates/deployments/paperless-ngx/docker-compose.env
+        dest: /opt/dockge/stacks/paperless-ngx/docker-compose.env
+        mode: '0600'
+        directory_mode: '0755'
+    - name: Copy paperless env file
+      ansible.builtin.copy:
+        src: templates/deployments/paperless-ngx/.env
+        dest: /opt/dockge/stacks/paperless-ngx/.env
         mode: '0600'
         directory_mode: '0755'
