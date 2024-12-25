@@ -108,3 +108,8 @@
         owner: factorio
         group: factorio
         mode: '0755'
+    
+    - name: Restart Factorio service
+      systemd:
+        name: factorio
+        state: restarted

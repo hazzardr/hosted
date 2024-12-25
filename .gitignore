@@ -8,3 +8,8 @@ inventory*
 private.yml
 group_vars/*/vault.yml
 *.env
+
+# TF secrets 
+local.tfvars
+.terraform/
+.terraform*
