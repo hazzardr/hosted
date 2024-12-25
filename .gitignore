@@ -13,3 +13,4 @@ group_vars/*/vault.yml
 local.tfvars
 .terraform/
 .terraform*
+*.tfstate
