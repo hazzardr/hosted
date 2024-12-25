@@ -14,3 +14,4 @@ local.tfvars
 .terraform/
 .terraform*
 *.tfstate
+*.tfstate.*

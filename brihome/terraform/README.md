@@ -4,6 +4,12 @@ Since I'm using proxmox, you need to set up a terraform user + secret. The instr
 
 # Pre-reqs
 
+## terraform
+
+Using LOS for state -> see `bricloud/terraform/README.md`
+
+## proxmox
+
 * Proxmox setup (manual)
 * [Proxmox helper scripts](https://community-scripts.github.io/ProxmoxVE/)
   * Post install
