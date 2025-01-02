@@ -16,3 +16,6 @@ local.tfvars
 *.tfstate
 *.tfstate.*
 .idea/
+
+.DS_Store
+.vscode/
