@@ -1,0 +1,13 @@
+---
+
+- name: Ansible playbook for all hosts
+  hosts: all
+  roles:
+    - ubuntu
+  remote_user: ansible
+
+#- name: Ansible playbook for configuring DNS
+#  hosts: dns
+#  roles:
+#    - dns
+#  remote_user: ansible

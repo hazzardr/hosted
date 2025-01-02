@@ -1,0 +1,1 @@
+tailscale_key: "{{ vault_dns_tailscale_key }}"

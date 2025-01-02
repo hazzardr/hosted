@@ -1,23 +1,48 @@
-resource "proxmox_lxc" "dns" {
+resource "proxmox_vm_qemu" "network" {
+  name     = "brihome-networking"
+  desc = "Reverse proxy and dns server"
   target_node  = "proxmox"
-  hostname     = "lxc-dnsmasq"
-  ostemplate   = var.lxc_template_name
-  unprivileged = true
+  clone   = var.vm_template_name
+  os_type = "cloud-init"
+  agent = 1
 
-  ssh_public_keys = var.ssh_keys
-  rootfs {
-    storage = "local-lvm"
-    size    = "2G"
-  }
-
-  memory = 512
-  swap   = 512
   cores  = 1
+  sockets = 1
+  vcpus = 0
+  cpu_type = "host"
+
+  memory = 2048
+  scsihw = "lsi"
+
+  # Disk
+  disks {
+    ide {
+      ide3 {
+        cloudinit {
+          storage = "local-lvm"
+        }
+      }
+    }
+    virtio {
+      virtio0 {
+        disk {
+          size            = "16G"
+          cache           = "writeback"
+          storage         = "local-lvm"
+          iothread        = true
+        }
+      }
+    }
+  }
 
   network {
-    name   = "eth0"
+    id = 0
+    model = "virtio"
+    # Proxmox standard bridge
     bridge = "vmbr0"
-    ip     = var.dns_ip
-    ip6    = "auto"
   }
+
+  boot = "order=virtio0;net0"
+  ipconfig0 = "ip=${var.network_ip}/24,gw=${var.router_ip}"
+  sshkeys = var.ssh_keys
 }

@@ -13,7 +13,7 @@ variable "proxmox_host" {
 
 variable "vm_template_name" {
   description = "The name of the cloud init template to clone"
-  default     = "local:iso/noble-server-cloudimg-amd64.img"
+  default     = "ub2404-ci"
 }
 
 variable "lxc_template_name" {
@@ -29,6 +29,10 @@ variable "token_secret" {
   sensitive = true
 }
 
-variable "dns_ip" {
+variable "network_ip" {
   description = "The static IP address of the DNS server"
+}
+
+variable "router_ip" {
+  description = "The address of the router on the home lan"
 }
