@@ -25,12 +25,8 @@ deploy:
 
 .PHONY: ping ## Ping the hosts
 ping: 
-	@ansible -i inventory-ts webserver -m ping
+	@ansible -i inventory playbook.yml -m ping
 
-.PHONY: provision ## Provision the hosts
-provision: 
-	@ansible-playbook webserver.yml --vault-password-file .vault_pass -i inventory-ts
-
-.PHONY: updates ## Check for updates
-updates: 
-	@ansible-playbook updates.yml --vault-password-file .vault_pass -i inventory-ts
+.PHONY: bootstrap ## Provision the hosts
+bootstrap:
+	@ansible-playbook bootstrap.yml --ask-become-pass -i inventory

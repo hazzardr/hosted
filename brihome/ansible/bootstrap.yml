@@ -2,8 +2,8 @@
 - name: Setup ansible user and group
   hosts: all
   become: yes
-  vars_files:
-    - bootstrap_vault.yml
+#  vars_files:
+#    - bootstrap_vault.yml
   tasks:
     - name: Install required packages
       apt:
