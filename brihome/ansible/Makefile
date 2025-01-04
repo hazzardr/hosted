@@ -14,14 +14,10 @@ help:
 .PHONY: install ## install requirements
 install:
 	@ansible-galaxy install -r requirements.yml
-	
-.PHONY: vault-edit ## edit secret vars
-vault-edit: 
-	@ansible-vault edit vars/vault.yml --vault-password-file .vault_pass
 
 .PHONY: deploy ## run the webserver playbook
 deploy: 
-	@ansible-playbook deployments.yml --vault-password-file .vault_pass -i inventory-ts
+	@ansible-playbook playbook.yml --ask-vault-pass -i inventory
 
 .PHONY: ping ## Ping the hosts
 ping: 
@@ -29,4 +25,4 @@ ping:
 
 .PHONY: bootstrap ## Provision the hosts
 bootstrap:
-	@ansible-playbook bootstrap.yml --ask-become-pass -i inventory
+	@ansible-playbook bootstrap.yml -i inventory --vault-password-file .bootstrap_vault_pass

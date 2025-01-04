@@ -2,8 +2,11 @@
 - name: Setup ansible user and group
   hosts: all
   become: yes
-#  vars_files:
-#    - bootstrap_vault.yml
+  vars_files:
+    - vars/bootstrap_vault.yml
+  vars:
+    ansible_become_password: "{{ vault_ansible_become_pass }}"
+    ansible_user: "{{ vault_ansible_user }}"
   tasks:
     - name: Install required packages
       apt:

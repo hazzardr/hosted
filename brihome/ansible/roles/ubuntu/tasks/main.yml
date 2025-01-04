@@ -50,10 +50,9 @@
       - python3-pip
     state: present
 
-
 - name: Set up Tailscale
-  roles:
-    - role: artis3n.tailscale
-      vars:
-        tailscale_authkey: "{{ tailscale_key }}"
-        tailscale_args: "--ssh"
+  include_role:
+    name: artis3n.tailscale
+  vars:
+    tailscale_authkey: "{{ tailscale_key }}"
+    tailscale_args: "--ssh"

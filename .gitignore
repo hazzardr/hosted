@@ -5,8 +5,9 @@ terraform.rc
 *.retry
 inventory*
 .vault_pass
+.*vault_pass
 private.yml
-group_vars/*/vault.yml
+*vault.yml
 *.env
 
 # TF secrets 

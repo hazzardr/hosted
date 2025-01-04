@@ -2,6 +2,11 @@
 
 - name: Ansible playbook for all hosts
   hosts: all
+  become: yes
+  vars_files:
+    - vars/ubuntu_vault.yml
+  vars:
+    ansible_become_password: "{{ vault_ansible_become_pass }}"
   roles:
     - ubuntu
   remote_user: ansible
