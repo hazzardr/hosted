@@ -1,1 +1,2 @@
 tailscale_key: "{{ vault_dns_tailscale_key }}"
+reverse_proxy_ip_address: "{{ vault_dns_reverse_proxy_ip_address }}"

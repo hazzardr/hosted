@@ -1,0 +1,19 @@
+---
+- name: Install dnsmasq
+  apt:
+    name: dnsmasq
+    state: present
+    update_cache: yes
+
+- name: Configure dnsmasq
+  template:
+    src: dnsmasq.conf.j2
+    dest: /etc/dnsmasq.conf
+    mode: '0644'
+  notify: restart dnsmasq
+
+- name: Ensure dnsmasq is running and enabled
+  service:
+    name: dnsmasq
+    state: started
+    enabled: yes
