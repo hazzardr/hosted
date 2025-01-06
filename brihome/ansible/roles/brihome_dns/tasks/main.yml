@@ -5,6 +5,19 @@
     state: present
     update_cache: yes
 
+- name: Ensure DNSStubListener is set to no
+  lineinfile:
+    path: /etc/systemd/resolved.conf
+    regexp: '^#?DNSStubListener='
+    line: 'DNSStubListener=no'
+    state: present
+  notify: restart systemd-resolved
+
+- name: Restart systemd-resolved
+  service:
+    name: systemd-resolved
+    state: restarted
+
 - name: Configure dnsmasq
   template:
     src: dnsmasq.conf.j2

@@ -1,5 +1,4 @@
 ---
-
 - name: Ansible playbook for all hosts
   hosts: all
   become: yes
@@ -10,6 +9,7 @@
   roles:
     - ubuntu
   remote_user: ansible
+  tags: ubuntu
 
 - name: Ansible playbook for configuring DNS
   hosts: dns
@@ -21,3 +21,4 @@
   roles:
     - brihome_dns
   remote_user: ansible
+  tags: dns
