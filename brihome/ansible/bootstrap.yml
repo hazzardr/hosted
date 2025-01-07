@@ -7,6 +7,7 @@
   vars:
     ansible_become_password: "{{ vault_ansible_become_pass }}"
     ansible_user: "{{ vault_ansible_user }}"
+    ansible_ssh_pass: "{{ vault_ansible_become_pass }}"
   tasks:
     - name: Install required packages
       apt:
@@ -65,5 +66,5 @@
   handlers:
     - name: restart sshd
       service:
-        name: sshd
+        name: ssh
         state: restarted

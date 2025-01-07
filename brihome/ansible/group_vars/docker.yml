@@ -1,0 +1,2 @@
+tailscale_key: "{{ vault_docker_tailscale_key }}"
+

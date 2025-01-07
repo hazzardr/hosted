@@ -3,7 +3,7 @@
   hosts: all
   become: yes
   vars_files:
-    - vars/ubuntu_vault.yml
+    - vars/vault.yml
   vars:
     ansible_become_password: "{{ vault_ansible_become_pass }}"
   roles:
@@ -15,10 +15,22 @@
   hosts: dns
   become: yes
   vars_files:
-      - vars/dns_vault.yml
+    - vars/vault.yml
   vars:
     ansible_become_password: "{{ vault_ansible_become_pass }}"
   roles:
     - brihome_dns
   remote_user: ansible
   tags: dns
+
+- name: Ansible playbook for configuring Docker
+  hosts: docker
+  become: yes
+  vars_files:
+    - vars/vault.yml
+  vars:
+      ansible_become_password: "{{ vault_ansible_become_pass }}"
+  roles:
+      - brihome_docker
+  remote_user: ansible
+  tags: docker
