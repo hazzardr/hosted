@@ -1,0 +1,21 @@
+---
+- name: Install Caddy
+  apt:
+    name: caddy
+    state: present
+  become: yes
+
+- name: Ensure Caddy service is enabled and started
+  service:
+    name: caddy
+    state: started
+    enabled: yes
+  become: yes
+
+- name: Deploy Caddy configuration
+  template:
+    src: Caddyfile.j2
+    dest: /etc/caddy/Caddyfile
+    mode: '0644'
+  notify: restart caddy
+  become: yes

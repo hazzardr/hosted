@@ -1,2 +1,2 @@
 tailscale_key: "{{ vault_docker_tailscale_key }}"
-
+ollama_base_url: "{{ vault_ollama_base_url }}"

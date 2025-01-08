@@ -4,8 +4,6 @@
   become: yes
   vars_files:
     - vars/vault.yml
-  vars:
-    ansible_become_password: "{{ vault_ansible_become_pass }}"
   roles:
     - ubuntu
   remote_user: ansible
@@ -16,8 +14,6 @@
   become: yes
   vars_files:
     - vars/vault.yml
-  vars:
-    ansible_become_password: "{{ vault_ansible_become_pass }}"
   roles:
     - brihome_dns
   remote_user: ansible
@@ -28,8 +24,6 @@
   become: yes
   vars_files:
     - vars/vault.yml
-  vars:
-      ansible_become_password: "{{ vault_ansible_become_pass }}"
   roles:
       - brihome_docker
   remote_user: ansible

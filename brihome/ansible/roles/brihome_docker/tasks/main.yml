@@ -2,3 +2,12 @@
 - name: Install docker
   include_role:
     name: geerlingguy.docker
+- name: Ensure deployment directory exists
+  file:
+    path: /home/ansible/docker
+    state: directory
+    mode: '0755'
+- name: Deploy Open Web UI
+  template:
+    src: open_webui/docker-compose.yml.j2
+    dest: /home/ansible/docker/docker-compose.yml

@@ -1,3 +1,4 @@
 ansible_connection: ssh
 ansible_python_interpreter: /usr/bin/python3
 local_domain: brihome.lan
+ansible_become_password: "{{ vault_ansible_become_pass }}"
