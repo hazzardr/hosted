@@ -1,3 +1,5 @@
 tailscale_key: "{{ vault_rp_tailscale_key }}"
 local_domain: "{{ vault_local_domain }}"
 reverse_proxy_ip_address: "{{ vault_reverse_proxy_ip_address }}"
+open_web_ui_ip: "{{ vault_open_web_ui_ip }}"
+open_web_ui_port: "{{ vault_open_web_ui_port }}"
