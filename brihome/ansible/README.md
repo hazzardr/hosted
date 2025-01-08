@@ -2,8 +2,8 @@
 
 ## DNS + Reverse Proxy
 
-* Dns managed on it's own LXC to forward every request to the brihome.lan domain to the reverse proxy
-* Reverse proxy is a Caddy systemd service running on the same LXC
+* Dns managed via router
+* Reverse proxy is a Caddy systemd service running on a VM
 * Caddy manages HTTPS certs automatically
 * Caddy points subdomains on brihome.lan to the appropriate services on the local network
 
@@ -14,9 +14,11 @@
 
 ## FAQ
 
-* To use the included tailscale role on an LXC, you must first add this to the proxmxo host: https://tailscale.com/kb/1130/lxc-unprivileged
+* https://github.com/tteck/Proxmox/discussions/2072
 * Docker host:
-* add guest agent
-* apt-get update && apt-get -y upgrade
-  apt-get install -y qemu-guest-agent
+  * add guest agent:
+  * ```bash
+    apt update && apt -y upgrade
+    apt install -y qemu-guest-agent
     systemctl enable qemu-guest-agent
+    ```

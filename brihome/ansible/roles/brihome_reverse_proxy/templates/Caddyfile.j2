@@ -1,7 +1,8 @@
 {
-    email rbrianhazzard@gmail.com
+        email rbrianhazzard@gmail.com
+        local_certs
 }
-
-example.com {
-    reverse_proxy localhost:8080
+chat.brihome.lan {
+        tls internal
+        reverse_proxy {{  open_web_ui_ip }}:{{ open_web_ui_port }}
 }

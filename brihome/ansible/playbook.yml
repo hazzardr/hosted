@@ -9,15 +9,15 @@
   remote_user: ansible
   tags: ubuntu
 
-- name: Ansible playbook for configuring DNS
-  hosts: dns
+- name: Ansible playbook for configuring Reverse Proxy
+  hosts: reverse_proxy
   become: yes
   vars_files:
     - vars/vault.yml
   roles:
-    - brihome_dns
+    - brihome_reverse_proxy
   remote_user: ansible
-  tags: dns
+  tags: reverse_proxy
 
 - name: Ansible playbook for configuring Docker
   hosts: docker

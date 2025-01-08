@@ -1,17 +1,26 @@
 ---
 
+- name: Add to sudoers
+  lineinfile:
+    dest: /etc/sudoers.d/caddy
+    line: "%caddy ALL=(ALL) ALL"
+    state: present
+    create: yes
+    validate: 'visudo -cf %s'
+    owner: root
+    group: root
+    mode: 0440
+
 - name: Install Caddy
   apt:
     name: caddy
     state: present
-  become: yes
 
 - name: Ensure Caddy service is enabled and started
   service:
     name: caddy
     state: started
     enabled: yes
-  become: yes
 
 - name: Deploy Caddy configuration
   template:
@@ -19,4 +28,19 @@
     dest: /etc/caddy/Caddyfile
     mode: '0644'
   notify: restart caddy
-  become: yes
+
+- name: Deploy Caddy systemd service file
+  template:
+    src: caddy.service.j2
+    dest: /etc/systemd/system/caddy.service
+    mode: '0644'
+  notify: restart caddy
+
+- name: Reload systemd to apply new service
+  command: systemctl daemon-reload
+
+- name: Ensure Caddy service is enabled and started
+  service:
+    name: caddy
+    state: started
+    enabled: yes

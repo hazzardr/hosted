@@ -1,0 +1,2 @@
+open_web_ui_ip: {{ vault_open_web_ui_ip }}
+open_web_ui_port: {{ vault_open_web_ui_port }}
