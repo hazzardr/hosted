@@ -6,3 +6,11 @@ chat.brihome.lan {
         tls internal
         reverse_proxy {{  open_web_ui_ip }}:{{ open_web_ui_port }}
 }
+proxmox.brihome.lan {
+        tls internal
+        reverse_proxy {{ proxmox_ip }}:{{ proxmox_port }}
+}
+homeassistant.brihome.lan {
+        tls internal
+        reverse_proxy {{ homeassistant_ip }}:{{ homeassistant_port }}
+}
