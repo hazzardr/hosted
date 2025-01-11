@@ -21,7 +21,6 @@
 
 - name: Ansible playbook for configuring Docker
   hosts: docker
-  become: yes
   vars_files:
     - vars/vault.yml
   roles:

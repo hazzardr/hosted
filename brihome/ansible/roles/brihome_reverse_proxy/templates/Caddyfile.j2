@@ -14,3 +14,7 @@ homeassistant.brihome.lan {
         tls internal
         reverse_proxy {{ homeassistant_ip }}:{{ homeassistant_port }}
 }
+hoarder.brihome.lan {
+        tls internal
+        reverse_proxy {{ hoarder_ip }}:{{ hoarder_port }}
+}

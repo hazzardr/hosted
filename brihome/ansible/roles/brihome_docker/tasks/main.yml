@@ -4,10 +4,28 @@
     name: geerlingguy.docker
 - name: Ensure deployment directory exists
   file:
-    path: /home/ansible/docker
+    path: "{{ item }}"
     state: directory
     mode: '0755'
+  loop:
+    - /home/ansible/docker
+    - /home/ansible/docker/open-web-ui
+    - /home/ansible/docker/hoarder
 - name: Deploy Open Web UI
   template:
     src: open_webui/docker-compose.yml.j2
-    dest: /home/ansible/docker/docker-compose.yml
+    dest: /home/ansible/docker/open-web-ui/docker-compose.yml
+- name: Check if .env file exists
+  stat:
+    path: /home/ansible/docker/hoarder/.env
+  register: hoarder_env_file
+- name: Create .env file for Hoarder
+  template:
+    src: hoarder/env.j2
+    dest: /home/ansible/docker/hoarder/.env
+    mode: '0644'
+  when: not hoarder_env_file.stat.exists
+- name: Deploy Hoarder
+  template:
+    src: hoarder/docker-compose.yml.j2
+    dest: /home/ansible/docker/hoarder/docker-compose.yml
