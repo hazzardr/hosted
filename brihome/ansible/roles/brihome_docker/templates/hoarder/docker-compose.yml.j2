@@ -6,7 +6,7 @@ services:
     volumes:
       - data:/data
     ports:
-      - 3001:3000
+      - {{ hoarder_port }}:3000
     env_file:
       - .env
     environment:
@@ -35,4 +35,4 @@ services:
 
 volumes:
   meilisearch:
-  data:
+  hoarder-data:

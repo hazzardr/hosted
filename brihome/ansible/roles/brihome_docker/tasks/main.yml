@@ -11,10 +11,13 @@
     - /home/ansible/docker
     - /home/ansible/docker/open-web-ui
     - /home/ansible/docker/hoarder
+    - /home/ansible/docker/paperless
+#    Open Webui
 - name: Deploy Open Web UI
   template:
     src: open_webui/docker-compose.yml.j2
     dest: /home/ansible/docker/open-web-ui/docker-compose.yml
+#    Hoarder
 - name: Check if .env file exists
   stat:
     path: /home/ansible/docker/hoarder/.env
@@ -29,3 +32,36 @@
   template:
     src: hoarder/docker-compose.yml.j2
     dest: /home/ansible/docker/hoarder/docker-compose.yml
+#   Paperless
+- name: Check if .env file exists
+  stat:
+    path: /home/ansible/docker/paperless/.env
+  register: paperless_dotenv_file
+- name: Check if docker.env file exists
+  stat:
+    path: /home/ansible/docker/paperless/docker-compose.env
+  register: paperless_dockerenv_file
+- name: Create docker.env file for Paperless
+  template:
+    src: paperless/docker-compose.env.j2
+    dest: /home/ansible/docker/paperless/docker-compose.env
+    mode: '0644'
+  when: not paperless_dockerenv_file.stat.exists
+- name: Create .env file for Paperless
+  template:
+    src: paperless/env.j2
+    dest: /home/ansible/docker/paperless/.env
+    mode: '0644'
+  when: not paperless_dotenv_file.stat.exists
+- name: Create consumption and export directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+  loop:
+    - /home/ansible/docker/paperless/consume
+    - /home/ansible/docker/paperless/export
+- name: Deploy Paperless
+  template:
+    src: paperless/docker-compose.yml.j2
+    dest: /home/ansible/docker/paperless/docker-compose.yml
