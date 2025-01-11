@@ -11,16 +11,51 @@
     group: root
     mode: 0440
 
-- name: Install Caddy
+- name: Install Go
   apt:
-    name: caddy
+    name: golang
     state: present
 
-- name: Ensure Caddy service is enabled and started
+- name: Install xcaddy
+  shell: go install github.com/caddyserver/xcaddy/cmd/xcaddy@latest
+  environment:
+    GOPATH: /root/go
+  args:
+    creates: /root/go/bin/xcaddy
+
+- name: Check if custom-built Caddy binary exists
+  stat:
+    path: /usr/local/bin/caddy
+  register: caddy_binary
+
+- name: Build Caddy with Porkbun DNS plugin
+  shell: /root/go/bin/xcaddy build --with github.com/caddy-dns/porkbun
+  args:
+    chdir: /usr/local/bin
+  when: not caddy_binary.stat.exists
+  register: build_output
+
+- name: Debug build output
+  debug:
+    var: build_output
+
+- name: Ensure Caddy service is stopped
   service:
     name: caddy
-    state: started
-    enabled: yes
+    state: stopped
+  when: ansible_service_mgr == 'systemd'
+
+- name: Verify Caddy binary permissions
+  file:
+    path: /usr/local/bin/caddy
+    mode: '0755'
+
+- name: Deploy custom-built Caddy binary
+  copy:
+    src: /usr/local/bin/caddy
+    dest: /usr/bin/caddy
+    mode: '0755'
+  notify: restart caddy
 
 - name: Deploy Caddy configuration
   template:

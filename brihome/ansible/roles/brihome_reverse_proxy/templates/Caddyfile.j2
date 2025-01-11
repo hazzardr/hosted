@@ -1,24 +1,24 @@
 {
         email rbrianhazzard@gmail.com
-        local_certs
+
+        acme_dns porkbun {
+                api_key {{ porkbun_api_token }}
+                api_secret_key {{ porkbun_api_secret }}
+        }
 }
+
 chat.{{ local_domain }} {
-        tls internal
         reverse_proxy {{  open_web_ui_ip }}:{{ open_web_ui_port }}
 }
 proxmox.{{ local_domain }} {
-        tls internal
         reverse_proxy {{ proxmox_ip }}:{{ proxmox_port }}
 }
 homeassistant.{{ local_domain }} {
-        tls internal
         reverse_proxy {{ homeassistant_ip }}:{{ homeassistant_port }}
 }
 hoarder.{{ local_domain }} {
-        tls internal
         reverse_proxy {{ hoarder_ip }}:{{ hoarder_port }}
 }
 paperless.{{ local_domain }} {
-        tls internal
         reverse_proxy {{ paperless_ip }}:{{ paperless_port }}
 }
