@@ -1,0 +1,10 @@
+services:
+  caddy:
+    image: ghcr.io/hazzardr/caddy:main
+    container_name: caddy
+    restart: unless-stopped
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - /etc/caddy/Caddyfile:/etc/caddy/Caddyfile

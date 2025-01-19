@@ -1,5 +1,7 @@
 ---
-
+- name: Install docker
+  include_role:
+    name: geerlingguy.docker
 - name: Add to sudoers
   lineinfile:
     dest: /etc/sudoers.d/caddy
@@ -10,72 +12,22 @@
     owner: root
     group: root
     mode: 0440
-
-- name: Install Go
-  apt:
-    name: golang
-    state: present
-
-- name: Install xcaddy
-  shell: go install github.com/caddyserver/xcaddy/cmd/xcaddy@latest
-  environment:
-    GOPATH: /root/go
-  args:
-    creates: /root/go/bin/xcaddy
-
-- name: Check if custom-built Caddy binary exists
-  stat:
-    path: /usr/local/bin/caddy
-  register: caddy_binary
-
-- name: Build Caddy with Porkbun DNS plugin
-  shell: /root/go/bin/xcaddy build --with github.com/caddy-dns/porkbun
-  args:
-    chdir: /usr/local/bin
-  when: not caddy_binary.stat.exists
-  register: build_output
-
-- name: Debug build output
-  debug:
-    var: build_output
-
-- name: Ensure Caddy service is stopped
-  service:
-    name: caddy
-    state: stopped
-  when: ansible_service_mgr == 'systemd'
-
-- name: Verify Caddy binary permissions
+- name: Ensure deployment directory exists
   file:
-    path: /usr/local/bin/caddy
+    path: /home/ansible/docker
+    state: directory
     mode: '0755'
-
-- name: Deploy custom-built Caddy binary
-  copy:
-    src: /usr/local/bin/caddy
-    dest: /usr/bin/caddy
+- name: Deploy Caddy
+  template:
+      src: docker-compose.yml.j2
+      dest: /home/ansible/docker/docker-compose.yml
+- name: Ensure /etc/caddy directory exists
+  file:
+    path: /etc/caddy
+    state: directory
     mode: '0755'
-  notify: restart caddy
-
 - name: Deploy Caddy configuration
   template:
     src: Caddyfile.j2
     dest: /etc/caddy/Caddyfile
     mode: '0644'
-  notify: restart caddy
-
-- name: Deploy Caddy systemd service file
-  template:
-    src: caddy.service.j2
-    dest: /etc/systemd/system/caddy.service
-    mode: '0644'
-  notify: restart caddy
-
-- name: Reload systemd to apply new service
-  command: systemctl daemon-reload
-
-- name: Ensure Caddy service is enabled and started
-  service:
-    name: caddy
-    state: started
-    enabled: yes

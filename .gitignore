@@ -9,7 +9,7 @@ inventory*
 private.yml
 *vault.yml
 *.env
-
+.venv
 # TF secrets 
 local.tfvars
 .terraform/

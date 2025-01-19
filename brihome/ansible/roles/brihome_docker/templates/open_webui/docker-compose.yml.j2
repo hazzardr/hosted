@@ -7,7 +7,7 @@ services:
         volumes:
         - open-webui:/app/backend/data
         environment:
-          - OLLAMA_BASE_URL={{ ollama_base_url }}
+          - OLLAMA_BASE_URL=http://{{ ollama_base_url }}:11434
         restart: always
 
 volumes:
