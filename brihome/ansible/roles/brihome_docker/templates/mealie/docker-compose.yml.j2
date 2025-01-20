@@ -1,6 +1,6 @@
 services:
   mealie:
-    image: ghcr.io/mealie-recipes/mealie:latest
+    image: ghcr.io/mealie-recipes/mealie:v2.4.2
     container_name: mealie
     restart: always
     ports:
@@ -13,36 +13,17 @@ services:
       - mealie-data:/app/data/
     environment:
       # Set Backend ENV Variables Here
-      ALLOW_SIGNUP: "false"
+      SECURITY_MAX_LOGIN_ATTEMPTS: 10
       PUID: 1001
       PGID: 1001
       TZ: America/New_York
       BASE_URL: https://mealie.{{ local_domain }}
-      # Database Settings
-      DB_ENGINE: postgres
-      POSTGRES_USER: mealie
-      POSTGRES_PASSWORD: mealie
-      POSTGRES_SERVER: postgres
-      POSTGRES_PORT: 5432
-      POSTGRES_DB: mealie
-    depends_on:
-      postgres:
-        condition: service_healthy
-  postgres:
-    container_name: postgres
-    image: postgres:15
-    restart: always
-    volumes:
-      - mealie-pgdata:/var/lib/postgresql/data
-    environment:
-      POSTGRES_PASSWORD: mealie
-      POSTGRES_USER: mealie
-      PGUSER: mealie
-    healthcheck:
-      test: ["CMD", "pg_isready"]
-      interval: 30s
-      timeout: 20s
-      retries: 3
+      # AI integrations
+      OPENAI_BASE_URL: "http://{{ ollama_base_url }}:11434/v1"
+      OPENAI_API_KEY: "ignored"
+      OPENAI_ENABLE_IMAGE_SERVICES: false
+      OEPNAI_MODEL: "gemma2:latest"
+      OPENAI_WORKERS: 1 # Ollama can't do concurrency anyways
+      OPENAI_SEND_DATABASE_DATA: false
 volumes:
   mealie-data:
-  mealie-pgdata:

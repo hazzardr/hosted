@@ -12,6 +12,7 @@
     - /home/ansible/docker/open-web-ui
     - /home/ansible/docker/hoarder
     - /home/ansible/docker/paperless
+    - /home/ansible/docker/mealie
 #    Open Webui
 - name: Deploy Open Web UI
   template:
@@ -65,3 +66,7 @@
   template:
     src: paperless/docker-compose.yml.j2
     dest: /home/ansible/docker/paperless/docker-compose.yml
+- name: Deploy Mealie
+  template:
+    src: mealie/docker-compose.yml.j2
+    dest: /home/ansible/docker/mealie/docker-compose.yml

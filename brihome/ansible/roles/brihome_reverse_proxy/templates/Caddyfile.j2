@@ -1,24 +1,48 @@
 {
-        email rbrianhazzard@gmail.com
+    email rbrianhazzard@gmail.com
+    acme_dns porkbun {
+        api_key {{ porkbun_api_token }}
+        api_secret_key {{ porkbun_api_secret }}
+    }
+}
 
-        acme_dns porkbun {
-                api_key {{ porkbun_api_token }}
-                api_secret_key {{ porkbun_api_secret }}
-        }
+(common) {
+    tls {
+        propagation_timeout 10m
+        resolvers 1.1.1.1 1.0.0.1
+    }
+    header {
+        Strict-Transport-Security "max-age=31536000;"
+        X-Content-Type-Options "nosniff"
+        X-Frame-Options "DENY"
+    }
 }
 
 chat.{{ local_domain }} {
-        reverse_proxy {{  open_web_ui_ip }}:{{ open_web_ui_port }}
+    import common
+    reverse_proxy {{  open_web_ui_ip }}:{{ open_web_ui_port }} 
 }
 proxmox.{{ local_domain }} {
-        reverse_proxy {{ proxmox_ip }}:{{ proxmox_port }}
+    import common
+    reverse_proxy {{ proxmox_ip }}:{{ proxmox_port }} 
 }
+
 homeassistant.{{ local_domain }} {
-        reverse_proxy {{ homeassistant_ip }}:{{ homeassistant_port }}
+    import common
+    reverse_proxy {{ homeassistant_ip }}:{{ homeassistant_port }} 
+
 }
 hoarder.{{ local_domain }} {
-        reverse_proxy {{ hoarder_ip }}:{{ hoarder_port }}
+    import common
+    reverse_proxy {{ hoarder_ip }}:{{ hoarder_port }} 
 }
+
 paperless.{{ local_domain }} {
-        reverse_proxy {{ paperless_ip }}:{{ paperless_port }}
+    import common
+    reverse_proxy {{ paperless_ip }}:{{ paperless_port }} 
+}
+
+mealie.{{ local_domain }} {
+    import common
+    reverse_proxy {{ mealie_ip }}:{{ mealie_port }}
 }
