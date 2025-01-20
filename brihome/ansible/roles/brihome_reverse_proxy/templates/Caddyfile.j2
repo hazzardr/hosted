@@ -1,16 +1,9 @@
 {
     email rbrianhazzard@gmail.com
-    acme_dns porkbun {
-        api_key {{ porkbun_api_token }}
-        api_secret_key {{ porkbun_api_secret }}
-    }
 }
 
 (common) {
-    tls {
-        propagation_timeout 10m
-        resolvers 1.1.1.1 1.0.0.1
-    }
+    tls /certs/brihome.me.cer /certs/brihome.me.key
     header {
         Strict-Transport-Security "max-age=31536000;"
         X-Content-Type-Options "nosniff"

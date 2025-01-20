@@ -4,8 +4,8 @@
 
 * Dns managed via router
 * Reverse proxy is a Caddy systemd service running on a VM
-* Caddy manages HTTPS certs automatically
-* Caddy points subdomains on brihome.lan to the appropriate services on the local network
+* Manually doing ACME challenge with [acme.sh](https://github.com/acmesh-official/acme.sh)
+* Caddy points subdomains on brihome.me to the appropriate services on the local network
 
 ## Docker Host
 
