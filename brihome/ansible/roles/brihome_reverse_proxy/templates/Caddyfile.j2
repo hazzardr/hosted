@@ -39,3 +39,8 @@ mealie.{{ local_domain }} {
     import common
     reverse_proxy {{ mealie_ip }}:{{ mealie_port }}
 }
+
+search.{{ local_domain }} {
+    import common
+    reverse_proxy {{ searxng_ip }}:{{ searxng_port }}
+}

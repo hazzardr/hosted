@@ -13,6 +13,7 @@
     - /home/ansible/docker/hoarder
     - /home/ansible/docker/paperless
     - /home/ansible/docker/mealie
+    - /home/ansible/docker/searxng
 #    Open Webui
 - name: Deploy Open Web UI
   template:
@@ -66,7 +67,50 @@
   template:
     src: paperless/docker-compose.yml.j2
     dest: /home/ansible/docker/paperless/docker-compose.yml
+# Mealie
 - name: Deploy Mealie
   template:
     src: mealie/docker-compose.yml.j2
     dest: /home/ansible/docker/mealie/docker-compose.yml
+# Searxng
+- name: Check if .env file exists
+  stat:
+    path: /home/ansible/docker/searxng/.env
+  register: searxng_dotenv_file
+
+- name: Check if searxng settings dir exists
+  stat:
+    path: /home/ansible/docker/searxng/settings
+  register: searxng_settings_dir
+
+- name: Create .env file for Searxng
+  template:
+    src: searxng/env.j2
+    dest: /home/ansible/docker/searxng/.env
+    mode: '0644'
+  when: not searxng_dotenv_file.stat.exists
+
+- name: Create settings directory for Searxng
+  file:
+    path: /home/ansible/docker/searxng/settings/
+    state: directory
+    mode: '0755'
+  when: not searxng_settings_dir.stat.exists  
+
+- name: Copy Searxng settings.yml file
+  template:
+    src: searxng/settings/settings.yml.j2
+    dest: /home/ansible/docker/searxng/settings/settings.yml
+    mode: '0644'
+
+- name: Copy Searxng limiter file
+  template:
+    src: searxng/settings/limiter.toml.j2
+    dest: /home/ansible/docker/searxng/settings/limiter.toml
+    mode: '0644'
+
+- name: Deploy Searxng
+  template:
+    src: searxng/docker-compose.yml.j2
+    dest: /home/ansible/docker/searxng/docker-compose.yml
+    mode: '0644'
