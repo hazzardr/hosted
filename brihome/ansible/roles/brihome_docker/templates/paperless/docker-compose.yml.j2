@@ -29,13 +29,13 @@
 services:
   broker:
     image: docker.io/library/redis:7
-    restart: unless-stopped
+    restart: no
     volumes:
       - paperless-redisdata:/data
 
   db:
     image: docker.io/library/postgres:16
-    restart: unless-stopped
+    restart: no
     volumes:
       - paperless-pgdata:/var/lib/postgresql/data
     environment:
@@ -45,7 +45,7 @@ services:
 
   webserver:
     image: ghcr.io/paperless-ngx/paperless-ngx:latest
-    restart: unless-stopped
+    restart: no
     depends_on:
       - db
       - broker
